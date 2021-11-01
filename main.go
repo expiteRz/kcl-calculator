@@ -21,20 +21,21 @@ var (
 
 func main() {
 	a := app.New()
+
 	w := a.NewWindow("Collision Type Calculator")
 	w.SetMainMenu(generateMenu)
 
 	flagEntry := widget.NewEntry()
+	flagEntry.Disable()
 
-	colTypeSel := widget.NewSelect(types, func(s string) {
-		for i := range types {
-			if types[i] == s {
-				colNum = i
-			}
-		}
-		flagEntry.SetText(calcFlag())
-	})
-	effSel := widget.NewSelect(eff, func(s string) {
+	// Initialize effect types
+	eff = DB{mode: 1, effectId: 0}.GetIndexes()
+	for _, s := range eff {
+		println(s)
+	}
+
+	// Define widgets
+	effSel := widget.NewSelect(eff, func(s string) { // Effects
 		for i := range eff {
 			if eff[i] == s {
 				effNum = i
@@ -42,15 +43,30 @@ func main() {
 		}
 		flagEntry.SetText(calcFlag())
 	})
-	shadeSel := widget.NewSelect(eff, func(s string) {
-		for i := range eff {
-			if eff[i] == s {
+	colTypeSel := widget.NewSelect(types, func(s string) { // Main Collision
+		for i := range types {
+			if types[i] == s {
+				colNum = i
+				eff = DB{1, i}.GetIndexes()
+			}
+		}
+
+		// Re-calculate effect types
+		selectedEff := effSel.SelectedIndex()
+		effSel.Options = eff
+		effSel.Refresh()
+		effSel.SetSelectedIndex(selectedEff)
+		flagEntry.SetText(calcFlag())
+	})
+	shadeSel := widget.NewSelect(shd, func(s string) { // Shadow
+		for i := range shd {
+			if shd[i] == s {
 				shdNum = i
 			}
 		}
 		flagEntry.SetText(calcFlag())
 	})
-	intensSel := widget.NewSelect(inte, func(s string) {
+	intensSel := widget.NewSelect(inte, func(s string) { // Intensity
 		for i := range inte {
 			if inte[i] == s {
 				intNum = i
@@ -59,6 +75,7 @@ func main() {
 		flagEntry.SetText(calcFlag())
 	})
 
+	// Assign widgets into a window
 	w.SetContent(container.NewVBox(
 		container.NewHBox(
 			container.NewVBox(
@@ -104,10 +121,6 @@ func main() {
 	// Show app
 	w.ShowAndRun()
 }
-
-//func generateMenu() *fyne.MainMenu {
-//	return fyne.NewMainMenu(menu)
-//}
 
 func calcFlag() string {
 	trrNum = 0
