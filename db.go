@@ -1,6 +1,7 @@
 package main
 
 import (
+	"context"
 	"database/sql"
 	"fmt"
 	_ "github.com/mattn/go-sqlite3"
@@ -58,9 +59,9 @@ func (d DB) GetIndexes() ([]string, error) {
 
 	switch d.mode {
 	case DataMode(colType):
-		q, _ = conn.Query("select * from col_types")
+		q, _ = conn.QueryContext(context.Background(), "select * from col_types")
 	case DataMode(effType):
-		r = conn.QueryRow(fmt.Sprintf("select ef_0, ef_1, ef_2, ef_3, ef_4, ef_5, ef_6, ef_7 from eff_list where id = %d", d.effectId))
+		r = conn.QueryRowContext(context.Background(), fmt.Sprintf("select ef_0, ef_1, ef_2, ef_3, ef_4, ef_5, ef_6, ef_7 from eff_list where id = %d", d.effectId))
 	default:
 		log.Fatal("Error: DataMode is out of range.")
 	}
