@@ -39,10 +39,6 @@ func main() {
 		return
 	}
 
-	for _, s := range eff {
-		println(s)
-	}
-
 	// Initialize effect types
 	w := a.NewWindow("Collision Type Calculator")
 	w.SetMainMenu(generateMenu)
@@ -151,8 +147,6 @@ func calcFlag() string {
 		}
 	}
 
-	println(trrNum)
-
 	var (
 		a = effNum * 32
 		b = shdNum * 256
@@ -171,8 +165,6 @@ func calcFlag() string {
 	} else {
 		flagHex = e
 	}
-
-	println(flagHex)
 
 	return flagHex
 }
