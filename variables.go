@@ -5,7 +5,7 @@ import (
 )
 
 var (
-	types    = DB{mode: colType, effectId: 0}.GetIndexes()
+	types, _ = DB{mode: colType, effectId: 0}.GetIndexes()
 	eff      []string
 	shd      = []string{"0", "1", "2", "3", "4", "5", "6", "7"}
 	inte     = []string{"0", "1", "2", "3"}

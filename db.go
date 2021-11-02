@@ -4,6 +4,7 @@ import (
 	"database/sql"
 	"fmt"
 	_ "github.com/mattn/go-sqlite3"
+	"io/ioutil"
 	"log"
 )
 
@@ -30,6 +31,11 @@ type EffList struct {
 
 // Connect to Database
 func Connect() (*sql.DB, error) {
+	_, err := ioutil.ReadFile("./kcl.db")
+	if err != nil {
+		return nil, err
+	}
+
 	conn, err := sql.Open("sqlite3", "./kcl.db")
 	if err != nil {
 		return nil, err
@@ -39,17 +45,20 @@ func Connect() (*sql.DB, error) {
 }
 
 // GetIndexes Get some data per refresh
-func (d DB) GetIndexes() []string {
+func (d DB) GetIndexes() ([]string, error) {
 	var (
 		q *sql.Rows
 		r *sql.Row
 	)
 
 	conn, err := Connect()
+	if err != nil {
+		return nil, err
+	}
 
 	switch d.mode {
 	case DataMode(colType):
-		q, err = conn.Query("select * from col_types")
+		q, _ = conn.Query("select * from col_types")
 	case DataMode(effType):
 		r = conn.QueryRow(fmt.Sprintf("select ef_0, ef_1, ef_2, ef_3, ef_4, ef_5, ef_6, ef_7 from eff_list where id = %d", d.effectId))
 	default:
@@ -57,8 +66,7 @@ func (d DB) GetIndexes() []string {
 	}
 
 	if err != nil {
-		log.Fatalf("Error in query: %v\n", err)
-		return nil
+		return nil, err
 	}
 
 	var (
@@ -73,7 +81,7 @@ func (d DB) GetIndexes() []string {
 		for q.Next() {
 			err := q.Scan(&c.Id, &c.Name)
 			if err != nil {
-				return nil
+				return nil, err
 			}
 			ar = append(ar, c)
 		}
@@ -84,11 +92,11 @@ func (d DB) GetIndexes() []string {
 	case DataMode(effType):
 		err := r.Scan(&e.ef0, &e.ef1, &e.ef2, &e.ef3, &e.ef4, &e.ef5, &e.ef6, &e.ef7)
 		if err != nil {
-			return nil
+			return nil, err
 		}
 
 		cr = append(cr, e.ef0, e.ef1, e.ef2, e.ef3, e.ef4, e.ef5, e.ef6, e.ef7)
 	}
 
-	return cr
+	return cr, nil
 }

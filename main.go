@@ -5,6 +5,7 @@ import (
 	"fyne.io/fyne/v2/app"
 	"fyne.io/fyne/v2/container"
 	"fyne.io/fyne/v2/widget"
+	"os"
 	"strconv"
 	"strings"
 )
@@ -22,17 +23,32 @@ var (
 func main() {
 	a := app.New()
 
+	eff, err := DB{mode: 1, effectId: 0}.GetIndexes()
+	if err != nil {
+		w := a.NewWindow("Error")
+		w.CenterOnScreen()
+		label := widget.NewLabel("Error has occurred in loading database.\nMake sure proper kcl.db is in the same directory.")
+		label.Alignment = fyne.TextAlignCenter
+		w.SetContent(container.NewVBox(
+			label,
+			widget.NewButton("Quit", func() {
+				os.Exit(1)
+			}),
+		))
+		w.ShowAndRun()
+		return
+	}
+
+	for _, s := range eff {
+		println(s)
+	}
+
+	// Initialize effect types
 	w := a.NewWindow("Collision Type Calculator")
 	w.SetMainMenu(generateMenu)
 
 	flagEntry := widget.NewEntry()
 	flagEntry.Disable()
-
-	// Initialize effect types
-	eff = DB{mode: 1, effectId: 0}.GetIndexes()
-	for _, s := range eff {
-		println(s)
-	}
 
 	// Define widgets
 	effSel := widget.NewSelect(eff, func(s string) { // Effects
@@ -47,7 +63,7 @@ func main() {
 		for i := range types {
 			if types[i] == s {
 				colNum = i
-				eff = DB{1, i}.GetIndexes()
+				eff, err = DB{1, i}.GetIndexes()
 			}
 		}
 
