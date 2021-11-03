@@ -5,7 +5,7 @@ import (
 )
 
 var (
-	types, _ = DB{mode: colType, effectId: 0}.GetIndexes()
+	types, _ = GetIndexes(DB{0, 0})
 	shd      = []string{"0", "1", "2", "3", "4", "5", "6", "7"}
 	inte     = []string{"0", "1", "2", "3"}
 	menu     = fyne.NewMenu("File")

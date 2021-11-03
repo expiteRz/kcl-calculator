@@ -46,7 +46,7 @@ func Connect() (*sql.DB, error) {
 }
 
 // GetIndexes Get some data per refresh
-func (d DB) GetIndexes() ([]string, error) {
+func GetIndexes(d DB) ([]string, error) {
 	var (
 		q *sql.Rows
 		r *sql.Row

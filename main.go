@@ -23,7 +23,7 @@ var (
 func main() {
 	a := app.New()
 
-	eff, err := DB{mode: 1, effectId: 0}.GetIndexes()
+	eff, err := GetIndexes(DB{1, 0})
 	if err != nil {
 		w := a.NewWindow("Error")
 		w.CenterOnScreen()
@@ -59,7 +59,7 @@ func main() {
 		for i := range types {
 			if types[i] == s {
 				colNum = i
-				eff, err = DB{1, i}.GetIndexes()
+				eff, err = GetIndexes(DB{1, i})
 			}
 		}
 
