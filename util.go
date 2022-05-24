@@ -14,7 +14,7 @@ func CalcFlag() (flagHex string) {
 		d = trrNum << 13
 	)
 
-	flagHex = fmt.Sprintf("%04x", int64(a+b+c+d))
+	flagHex = fmt.Sprintf("%04X", int64(a+b+c+d))
 
 	return flagHex
 }
