@@ -5,7 +5,7 @@ import (
 )
 
 func CalcFlag() (flagHex string) {
-	trrNum = Btoi(trrArray[0]) | Btoi(trrArray[1])<<1 | Btoi(trrArray[2])<<2
+	trrNum = Btoi(trickOptions[0]) | Btoi(trickOptions[1])<<1 | Btoi(trickOptions[2])<<2
 
 	var (
 		a = collisionType | effectType<<5
