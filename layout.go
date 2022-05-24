@@ -103,5 +103,9 @@ func mainWindow(a f.App) (w f.Window) {
 	shadeSelect.SetSelectedIndex(0)
 	intensitySelect.SetSelectedIndex(0)
 
+	size := w.Canvas().Size()
+	w.SetFixedSize(true)
+	w.Resize(size)
+
 	return w
 }
