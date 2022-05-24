@@ -43,19 +43,19 @@ func mainWindow(a f.App) (w f.Window) {
 		flagEntry.SetText(CalcFlag())
 	})
 
-	shadeSelect = widget.NewSelect(shd, func(s string) {
-		for i := range shd {
-			if shd[i] == s {
-				shdNum = i
+	shadeSelect = widget.NewSelect(shadeOptions, func(s string) {
+		for i := range shadeOptions {
+			if shadeOptions[i] == s {
+				shadeNum = i
 			}
 		}
 		flagEntry.SetText(CalcFlag())
 	})
 
-	intensitySelect = widget.NewSelect(inte, func(s string) {
-		for i := range inte {
-			if inte[i] == s {
-				intNum = i
+	intensitySelect = widget.NewSelect(intensityOptions, func(s string) {
+		for i := range intensityOptions {
+			if intensityOptions[i] == s {
+				intensityNum = i
 			}
 		}
 		flagEntry.SetText(CalcFlag())
@@ -82,16 +82,16 @@ func mainWindow(a f.App) (w f.Window) {
 			),
 			container.NewVBox(
 				widget.NewLabel("Tricks"),
-				widget.NewCheck(trr[0], func(b bool) {
-					trickOptions[0] = b
+				widget.NewCheck(trickOptions[0], func(b bool) {
+					trickTriggers[0] = b
 					flagEntry.SetText(CalcFlag())
 				}),
-				widget.NewCheck(trr[1], func(b bool) {
-					trickOptions[1] = b
+				widget.NewCheck(trickOptions[1], func(b bool) {
+					trickTriggers[1] = b
 					flagEntry.SetText(CalcFlag())
 				}),
-				widget.NewCheck(trr[2], func(b bool) {
-					trickOptions[2] = b
+				widget.NewCheck(trickOptions[2], func(b bool) {
+					trickTriggers[2] = b
 					flagEntry.SetText(CalcFlag())
 				}),
 			)),

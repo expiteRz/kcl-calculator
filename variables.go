@@ -1,18 +1,18 @@
 package main
 
 var (
-	shd    = []string{"0", "1", "2", "3", "4", "5", "6", "7"}
-	inte   = []string{"0", "1", "2", "3"}
-	trr    = []string{"Trick", "No Drive", "Wall"}
-	shdNum int
-	intNum int
-	trrNum int
+	shadeOptions     = []string{"0", "1", "2", "3", "4", "5", "6", "7"}
+	intensityOptions = []string{"0", "1", "2", "3"}
+	trickOptions     = []string{"Trick", "No Drive", "Wall"}
+	shadeNum         int
+	intensityNum     int
+	trickNum         int
 
 	/// Since v0.2 ///
 
 	collisionType  = 0
 	effectType     = 0
-	trickOptions   = []bool{false, false, false}
+	trickTriggers  = []bool{false, false, false}
 	collisionNames = []string{
 		"Road",
 		"Slippery Road 1",
