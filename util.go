@@ -1,6 +1,8 @@
 package main
 
-import "strconv"
+import (
+	"fmt"
+)
 
 func CalcFlag() (flagHex string) {
 	trrNum = Btoi(trrArray[0]) | Btoi(trrArray[1])<<1 | Btoi(trrArray[2])<<2
@@ -12,18 +14,7 @@ func CalcFlag() (flagHex string) {
 		d = trrNum << 13
 	)
 
-	flagFormat := strconv.FormatInt(int64(a+b+c+d), 16)
-
-	switch len(flagFormat) {
-	case 1:
-		flagHex = "000" + flagFormat
-	case 2:
-		flagHex = "00" + flagFormat
-	case 3:
-		flagHex = "0" + flagFormat
-	default:
-		return flagFormat
-	}
+	flagHex = fmt.Sprintf("%04x", int64(a+b+c+d))
 
 	return flagHex
 }
