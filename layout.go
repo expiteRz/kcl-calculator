@@ -1,9 +1,11 @@
 package main
 
 import (
+	"fmt"
 	f "fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/container"
 	"fyne.io/fyne/v2/widget"
+	"github.com/atotto/clipboard"
 )
 
 func mainWindow(a f.App) (w f.Window) {
@@ -16,8 +18,23 @@ func mainWindow(a f.App) (w f.Window) {
 
 	w = a.NewWindow("Simple KCL Calculator")
 
+	collisionHexLabel := widget.NewLabel(fmt.Sprintf("0x%02X", collisionType))
+	effectHexLabel := widget.NewLabel(fmt.Sprintf("0x%02X", effectType))
+
 	flagEntry := widget.NewEntry()
 	flagEntry.Disable()
+
+	formLayout := &widget.Form{
+		Items: []*widget.FormItem{
+			{Text: "Result", Widget: flagEntry},
+		},
+		OnCancel: func() {
+			if err := clipboard.WriteAll(flagEntry.Text); err != nil {
+				fmt.Printf("Error occurred in copying text: %v\n", err)
+			}
+		},
+		CancelText: "Copy",
+	}
 
 	collisionSelect = widget.NewSelect(collisionNames, func(s string) {
 		for i, s2 := range collisionNames {
@@ -27,6 +44,7 @@ func mainWindow(a f.App) (w f.Window) {
 			}
 		}
 
+		collisionHexLabel.SetText(fmt.Sprintf("0x%02X", collisionType))
 		selectedEffect := effectSelect.SelectedIndex()
 		effectSelect.Options = effectTypes[collisionNames[collisionType]]
 		effectSelect.Refresh()
@@ -40,6 +58,7 @@ func mainWindow(a f.App) (w f.Window) {
 				effectType = i
 			}
 		}
+		effectHexLabel.SetText(fmt.Sprintf("0x%02X", effectType))
 		flagEntry.SetText(CalcFlag())
 	})
 
@@ -67,10 +86,12 @@ func mainWindow(a f.App) (w f.Window) {
 			container.NewVBox(
 				widget.NewLabel("Collision Type"),
 				collisionSelect,
+				collisionHexLabel,
 			),
 			container.NewVBox(
 				widget.NewLabel("Effect"),
 				effectSelect,
+				effectHexLabel,
 			),
 			container.NewVBox(
 				widget.NewLabel("Shadow"),
@@ -95,7 +116,7 @@ func mainWindow(a f.App) (w f.Window) {
 					flagEntry.SetText(CalcFlag())
 				}),
 			)),
-		container.NewVBox(flagEntry),
+		formLayout,
 	))
 
 	collisionSelect.SetSelectedIndex(0)
