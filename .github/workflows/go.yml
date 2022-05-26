@@ -23,6 +23,9 @@ jobs:
         with:
           go-version: 1.18
 
+      - name: Download libraries
+        run: go mod tidy
+
       - name: Build
         run: go build -v ./...
 
@@ -44,6 +47,9 @@ jobs:
         uses: actions/setup-go@v3
         with:
           go-version: 1.18
+
+      - name: Download libraries
+        run: go mod tidy
 
       - name: Build
         run: go build -v ./...
