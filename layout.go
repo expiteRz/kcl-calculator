@@ -4,8 +4,8 @@ import (
 	"fmt"
 	f "fyne.io/fyne/v2"
 	"fyne.io/fyne/v2/container"
+	"fyne.io/fyne/v2/theme"
 	"fyne.io/fyne/v2/widget"
-	"github.com/atotto/clipboard"
 )
 
 func mainWindow(a f.App) (w f.Window) {
@@ -18,8 +18,14 @@ func mainWindow(a f.App) (w f.Window) {
 
 	w = a.NewWindow("Simple KCL Calculator")
 
-	collisionHexLabel := widget.NewLabel(fmt.Sprintf("0x%02X", collisionType))
-	effectHexLabel := widget.NewLabel(fmt.Sprintf("0x%02X", effectType))
+	//collisionHexLabel := widget.NewLabel(fmt.Sprintf("0x%02X", collisionType))
+	collisionHexButton := widget.NewButtonWithIcon(collisionHexFormatted, theme.ContentCopyIcon(), func() {
+		CopyValue(collisionHexFormatted)
+	})
+	//effectHexLabel := widget.NewLabel(fmt.Sprintf("0x%02X", effectType))
+	effectHexButton := widget.NewButtonWithIcon(effectHexFormatted, theme.ContentCopyIcon(), func() {
+		CopyValue(effectHexFormatted)
+	})
 
 	flagEntry := widget.NewEntry()
 	flagEntry.Disable()
@@ -29,9 +35,7 @@ func mainWindow(a f.App) (w f.Window) {
 			{Text: "Result", Widget: flagEntry},
 		},
 		OnCancel: func() {
-			if err := clipboard.WriteAll(flagEntry.Text); err != nil {
-				fmt.Printf("Error occurred in copying text: %v\n", err)
-			}
+			CopyValue(flagEntry.Text)
 		},
 		CancelText: "Copy",
 	}
@@ -44,7 +48,8 @@ func mainWindow(a f.App) (w f.Window) {
 			}
 		}
 
-		collisionHexLabel.SetText(fmt.Sprintf("0x%02X", collisionType))
+		collisionHexFormatted = fmt.Sprintf("0x%02X", collisionType)
+		collisionHexButton.SetText(collisionHexFormatted)
 		selectedEffect := effectSelect.SelectedIndex()
 		effectSelect.Options = effectTypes[collisionNames[collisionType]]
 		effectSelect.Refresh()
@@ -58,7 +63,8 @@ func mainWindow(a f.App) (w f.Window) {
 				effectType = i
 			}
 		}
-		effectHexLabel.SetText(fmt.Sprintf("0x%02X", effectType))
+		effectHexFormatted = CalcVariant()
+		effectHexButton.SetText(effectHexFormatted)
 		flagEntry.SetText(CalcFlag())
 	})
 
@@ -68,6 +74,8 @@ func mainWindow(a f.App) (w f.Window) {
 				shadeNum = i
 			}
 		}
+		effectHexFormatted = CalcVariant()
+		effectHexButton.SetText(effectHexFormatted)
 		flagEntry.SetText(CalcFlag())
 	})
 
@@ -77,6 +85,8 @@ func mainWindow(a f.App) (w f.Window) {
 				intensityNum = i
 			}
 		}
+		effectHexFormatted = CalcVariant()
+		effectHexButton.SetText(effectHexFormatted)
 		flagEntry.SetText(CalcFlag())
 	})
 
@@ -86,12 +96,12 @@ func mainWindow(a f.App) (w f.Window) {
 			container.NewVBox(
 				widget.NewLabel("Collision Type"),
 				collisionSelect,
-				collisionHexLabel,
+				collisionHexButton,
 			),
 			container.NewVBox(
 				widget.NewLabel("Effect"),
 				effectSelect,
-				effectHexLabel,
+				effectHexButton,
 			),
 			container.NewVBox(
 				widget.NewLabel("Shadow"),
@@ -105,14 +115,20 @@ func mainWindow(a f.App) (w f.Window) {
 				widget.NewLabel("Tricks"),
 				widget.NewCheck(trickOptions[0], func(b bool) {
 					trickTriggers[0] = b
+					effectHexFormatted = CalcVariant()
+					effectHexButton.SetText(effectHexFormatted)
 					flagEntry.SetText(CalcFlag())
 				}),
 				widget.NewCheck(trickOptions[1], func(b bool) {
 					trickTriggers[1] = b
+					effectHexFormatted = CalcVariant()
+					effectHexButton.SetText(effectHexFormatted)
 					flagEntry.SetText(CalcFlag())
 				}),
 				widget.NewCheck(trickOptions[2], func(b bool) {
 					trickTriggers[2] = b
+					effectHexFormatted = CalcVariant()
+					effectHexButton.SetText(effectHexFormatted)
 					flagEntry.SetText(CalcFlag())
 				}),
 			)),
