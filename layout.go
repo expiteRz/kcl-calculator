@@ -34,10 +34,10 @@ func mainWindow(a f.App) (w f.Window) {
 		Items: []*widget.FormItem{
 			{Text: "Result", Widget: flagEntry},
 		},
-		OnCancel: func() {
+		OnSubmit: func() {
 			CopyValue(flagEntry.Text)
 		},
-		CancelText: "Copy",
+		SubmitText: "Copy",
 	}
 
 	collisionSelect = widget.NewSelect(collisionNames, func(s string) {
