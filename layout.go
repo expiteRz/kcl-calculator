@@ -63,7 +63,7 @@ func mainWindow(a f.App) (w f.Window) {
 				effectType = i
 			}
 		}
-		effectHexFormatted = CalcVariant()
+		effectHexFormatted = fmt.Sprintf("0x%s", CalcVariant())
 		effectHexButton.SetText(effectHexFormatted)
 		flagEntry.SetText(CalcFlag())
 	})
@@ -74,7 +74,7 @@ func mainWindow(a f.App) (w f.Window) {
 				shadeNum = i
 			}
 		}
-		effectHexFormatted = CalcVariant()
+		effectHexFormatted = fmt.Sprintf("0x%s", CalcVariant())
 		effectHexButton.SetText(effectHexFormatted)
 		flagEntry.SetText(CalcFlag())
 	})
@@ -85,7 +85,7 @@ func mainWindow(a f.App) (w f.Window) {
 				intensityNum = i
 			}
 		}
-		effectHexFormatted = CalcVariant()
+		effectHexFormatted = fmt.Sprintf("0x%s", CalcVariant())
 		effectHexButton.SetText(effectHexFormatted)
 		flagEntry.SetText(CalcFlag())
 	})
@@ -115,19 +115,19 @@ func mainWindow(a f.App) (w f.Window) {
 				widget.NewLabel("Tricks"),
 				widget.NewCheck(trickOptions[0], func(b bool) {
 					trickTriggers[0] = b
-					effectHexFormatted = CalcVariant()
+					effectHexFormatted = fmt.Sprintf("0x%s", CalcVariant())
 					effectHexButton.SetText(effectHexFormatted)
 					flagEntry.SetText(CalcFlag())
 				}),
 				widget.NewCheck(trickOptions[1], func(b bool) {
 					trickTriggers[1] = b
-					effectHexFormatted = CalcVariant()
+					effectHexFormatted = fmt.Sprintf("0x%s", CalcVariant())
 					effectHexButton.SetText(effectHexFormatted)
 					flagEntry.SetText(CalcFlag())
 				}),
 				widget.NewCheck(trickOptions[2], func(b bool) {
 					trickTriggers[2] = b
-					effectHexFormatted = CalcVariant()
+					effectHexFormatted = fmt.Sprintf("0x%s", CalcVariant())
 					effectHexButton.SetText(effectHexFormatted)
 					flagEntry.SetText(CalcFlag())
 				}),
