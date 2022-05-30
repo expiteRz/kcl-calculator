@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"github.com/atotto/clipboard"
+	"golang.design/x/clipboard"
 	"strings"
 )
 
@@ -44,7 +44,8 @@ func Btoi(b bool) int {
 
 func CopyValue(v string) {
 	v = strings.TrimPrefix(v, "0x")
-	if err := clipboard.WriteAll(v); err != nil {
-		fmt.Printf("Error occurred in copying text: %v\n", err)
-	}
+	clipboard.Write(clipboard.FmtText, []byte(v))
+	//if err := clipboard.WriteAll(v); err != nil {
+	//	fmt.Printf("Error occurred in copying text: %v\n", err)
+	//}
 }
